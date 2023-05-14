@@ -1,0 +1,181 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<main class=" d-flex  flex-column align-items-center">
+
+		<section class="d-flex flex-column align-items-center contaionerWraper">
+
+			<div id="output-display" class="d-flex flex-column text-end " style="height:100px;"> 
+				<p class="previous"></p>
+				<p class="current fw-bold text-primary"></p>
+			</div>
+
+			<div class="d-flex flex-column align-content-end " id="btnContainer">
+				<div class="m-1 d-flex gap-1">
+					<button id="clear" class="btn btn-warning">Clear</button>
+					<button class="backspace btn btn-danger w-100">Del</button>
+				</div>
+
+				<div class="m-1 d-flex justify-content-between gap-1">
+
+					<button class="number btn btn-secondary w-100" id="seven">7</button>
+					<button class="number btn btn-secondary w-100" id="eight">8</button>
+					<button class="number btn btn-secondary w-100" id="nine">9</button>
+					<button class=" btn btn-dark w-100" id="add">+</button>
+
+				</div>
+				<div class="m-1 d-flex justify-content-between gap-1">
+					<button class="number btn btn-secondary w-100" id="four">4</button>
+					<button class="number btn btn-secondary w-100" id="five">5</button>
+					<button class="number btn btn-secondary w-100" id="six">6</button>
+					<button class=" btn btn-dark w-100" id="subtract">-</button>
+
+				</div>
+				<div class="m-1 d-flex justify-content-between gap-1">
+					<button class="number btn btn-secondary w-100" id="one">1</button>
+					<button class="number btn btn-secondary w-100" id="two">2</button>
+					<button class="number btn btn-secondary w-100" id="three">3</button>
+					<button class=" btn btn-dark w-100" id="multiply">*</button>
+
+				</div>
+
+				<div class="m-1 d-flex justify-content-between gap-1">
+					<button class="number btn btn-secondary w-100" id="zero">0</button>
+					<button class="number btn btn-secondary w-100" id="decimal">.</button>
+					<button class="equal btn btn-info w-100" id="equals">=</button>
+					<button class=" btn btn-dark w-100" id="divide">÷</button>
+
+				</div>
+			</div>
+
+
+
+
+		</section>
+
+	</main>
+
+	@section Scripts {
+		<script type="text/javascript">
+        const outputPrevious = document.querySelector('.previous');
+        const outputCurrent = document.querySelector('.current');
+        const clear = document.getElementById('clear');
+        const backspace = document.querySelector('.backspace');
+        const add = document.getElementById('add');
+        const subtract = document.getElementById('subtract');
+        const multiply = document.getElementById('multiply');
+        const divide = document.getElementById('divide');
+        const equals = document.getElementById('equals');
+        const numbers = document.querySelectorAll('.number');
+
+
+        function addNumber(a, b) {
+            return a + b;
+        }
+
+        function subtractNumber(a, b) {
+            return a - b;
+        }
+
+        function multiplyNumber(a, b) {
+            return a * b;
+        }
+
+        function divideNumber(a, b) {
+            return a / b;
+        }
+
+        function operate(operator, a, b) {
+            switch (operator) {
+                case '+':
+                    return addNumber(a, b);
+                case '-':
+                    return subtractNumber(a, b);
+                case '*':
+                    return multiplyNumber(a, b);
+                case '÷':
+                    return divideNumber(a, b);
+            }
+        }
+
+        let currentNumber = '';
+        let previousNumber = '';
+        let operator = '';
+
+        numbers.forEach(number => {
+            number.addEventListener('click', () => {
+                if (number.textContent >= 0 && number.textContent <= 9 || number.textContent === '.') {
+                    currentNumber += number.textContent;
+                    outputCurrent.textContent = currentNumber;
+                }
+            })
+        })
+
+        add.addEventListener('click', () => {
+            if (currentNumber !== '') {
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operator = '+';
+                outputPrevious.textContent = `${previousNumber} ${operator}`;
+                outputCurrent.textContent = currentNumber;
+            }
+        })
+
+        subtract.addEventListener('click', () => {
+            if (currentNumber !== '') {
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operator = '-';
+                outputPrevious.textContent = `${previousNumber} ${operator}`;
+                outputCurrent.textContent = currentNumber;
+            }
+        })
+
+        multiply.addEventListener('click', () => {
+            if (currentNumber !== '') {
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operator = '*';
+                outputPrevious.textContent = `${previousNumber} ${operator}`;
+                outputCurrent.textContent = currentNumber;
+            }
+        })
+
+        divide.addEventListener('click', () => {
+            if (currentNumber !== '') {
+                previousNumber = currentNumber;
+                currentNumber = '';
+                operator = '÷';
+                outputPrevious.textContent = `${previousNumber} ${operator}`;
+                outputCurrent.textContent = currentNumber;
+            }
+        })
+
+        equals.addEventListener('click', () => {
+            if (currentNumber !== '' && previousNumber !== '') {
+                outputPrevious.textContent = '';
+                outputCurrent.textContent = operate(operator, Number(previousNumber), Number(currentNumber));
+                previousNumber = '';
+                currentNumber = `${outputCurrent.textContent}`;
+            }
+        })
+
+        clear.addEventListener('click', () => {
+            outputPrevious.textContent = '';
+            outputCurrent.textContent = '';
+            previousNumber = '';
+            currentNumber = '';
+        })
+
+        backspace.addEventListener('click', () => {
+            currentNumber = currentNumber.slice(0, -1);
+            outputCurrent.textContent = currentNumber;
+        })
+
+
+		
+		</script>
+	}
